@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GIANCA | Your Travel Partner — Adventure Tours in Cali, Colombia</title>
+
+<!-- Bootstrap 5 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+<!-- Fonts: Anton (blocky display, echoes the GIANCA wordmark) + Work Sans (body) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --gc-green: #364406;
+    --gc-green-dark: #232c04;
+    --gc-blue: #0C4767;
+    --gc-brown: #784828;
+    --gc-cream: #EEF1E8;
+    --gc-cream-2: #E4E9DC;
+    --gc-white: #FFFFFF;
+    --gc-ink: #202417;
+    --gc-radius: 2px;
+  }
+
+  * { scroll-behavior: smooth; }
+
+  body{
+    font-family: 'Work Sans', sans-serif;
+    color: var(--gc-ink);
+    background: var(--gc-white);
+  }
+
+  h1, h2, h3, h4, .display-font{
+    font-family: 'Anton', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    line-height: 1.05;
+  }
+
+  .eyebrow{
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-size: .78rem;
+    color: var(--gc-green);
+  }
+
+  a { color: inherit; }
+
+  /* ---------- Brand mark ---------- */
+  .brand-mark{
+    display: inline-flex;
+    align-items: center;
+    gap: .6rem;
+    text-decoration: none;
+  }
+  /* Real GIANCA logo, extracted from the brand PDF. White version shows over the
+     photo hero / transparent navbar; green version shows once the navbar is scrolled
+     (white background) and everywhere else on light backgrounds. */
+  .brand-mark img{ height: 70px; width: auto; display:block; }
+  .brand-mark .logo-green{ display:none; }
+  .navbar.scrolled .brand-mark .logo-white{ display:none; }
+  .navbar.scrolled .brand-mark .logo-green{ display:block; }
+
+  /* ---------- Navbar ---------- */
+  .navbar{
+    padding-top: 1.1rem;
+    padding-bottom: 1.1rem;
+    transition: all .3s ease;
+    background: transparent;
+  }
+  .navbar.scrolled{
+    background: var(--gc-white);
+    box-shadow: 0 2px 18px rgba(0,0,0,.08);
+    padding-top: .6rem;
+    padding-bottom: .6rem;
+  }
+  .navbar .nav-link{
+    font-weight: 600;
+    font-size: .92rem;
+    letter-spacing: .3px;
+    color: var(--gc-white);
+    margin: 0 .65rem;
+    position: relative;
+  }
+  .navbar.scrolled .nav-link{ color: var(--gc-ink); }
+  .navbar .nav-link::after{
+    content:"";
+    position:absolute; left:0; bottom:-4px;
+    width:0; height:2px; background: var(--gc-brown);
+    transition: width .25s ease;
+  }
+  .navbar .nav-link:hover::after{ width:100%; }
+
+  /* Mobile dropdown menu: while the navbar is still transparent (top of page, over
+     the hero photo), give the opened menu a solid backing so links stay readable.
+     Once scrolled, the navbar itself already has a solid white background, so no
+     extra styling is needed there. */
+  @media (max-width: 991.98px){
+    .navbar:not(.scrolled) .navbar-collapse{
+      background: rgba(15, 20, 5, .97);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem 1.5rem;
+      margin-top: .75rem;
+      box-shadow: 0 16px 34px rgba(0,0,0,.35);
+    }
+  }
+
+  /* Hamburger icon: white over the transparent/photo navbar so it doesn't get lost
+     against the dark hero image; reverts to Bootstrap's default dark icon once the
+     navbar has a solid white background. */
+  .navbar:not(.scrolled) .navbar-toggler{
+    border-color: rgba(255,255,255,.55);
+  }
+  .navbar:not(.scrolled) .navbar-toggler-icon{
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255,255,255,0.95)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  }
+  .navbar:not(.scrolled) .navbar-toggler:focus{
+    box-shadow: 0 0 0 .2rem rgba(255,255,255,.35);
+  }
+
+  .btn-gc-primary{
+    background: var(--gc-green);
+    border: 1px solid var(--gc-green);
+    color: var(--gc-white);
+    font-weight: 700;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    font-size: .82rem;
+    padding: .65rem 1.5rem;
+    border-radius: var(--gc-radius);
+    transition: all .25s ease;
+  }
+  .btn-gc-primary:hover{ background: var(--gc-green-dark); border-color: var(--gc-green-dark); color:#fff; }
+
+  .btn-gc-outline{
+    background: transparent;
+    border: 1.5px solid currentColor;
+    font-weight: 700;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    font-size: .82rem;
+    padding: .6rem 1.5rem;
+    border-radius: var(--gc-radius);
+    transition: all .25s ease;
+  }
+  .btn-gc-outline:hover{ background: rgba(255,255,255,.15); }
+
+  /* ---------- Mountain ridge divider (signature element) ---------- */
+  .ridge{
+    display:block;
+    width:100%;
+    line-height:0;
+  }
+  .ridge svg{ width:100%; height:60px; display:block; }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position: relative;
+    min-height: 100vh;
+    display:flex;
+    align-items:center;
+    background: linear-gradient(180deg, rgba(15,20,5,.45) 0%, rgba(12,16,4,.6) 55%, var(--gc-cream) 100%),
+                url('assets/gianca-hero-forest.jpg') center/cover no-repeat;
+  }
+  .hero-content{ color:#fff; padding-top: 6rem; }
+  .hero .eyebrow{ color: #cfe0a8; }
+  .hero h1{
+    font-size: clamp(2.6rem, 6vw, 5rem);
+    color: #fff;
+    text-shadow: 0 4px 24px rgba(0,0,0,.25);
+  }
+  .hero h1 span{ color: #A8C24A; }
+  .hero p.lead{ max-width: 560px; color: rgba(255,255,255,.9); }
+
+  .hero-stats{
+    background: var(--gc-white);
+    border-top: 6px solid var(--gc-green);
+    box-shadow: 0 -8px 30px rgba(0,0,0,.06);
+  }
+  .hero-stats .stat-num{
+    font-family:'Anton', sans-serif;
+    font-size: 2.4rem;
+    color: var(--gc-blue);
+    line-height:1;
+  }
+  .hero-stats .stat-label{
+    font-size: .78rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--gc-ink);
+    opacity:.75;
+  }
+
+  /* ---------- Sections ---------- */
+  section{ padding: 6rem 0; }
+  .bg-cream{ background: var(--gc-cream); }
+
+  .pillar{
+    text-align:left;
+    padding: 2rem 1.75rem;
+    background: var(--gc-white);
+    border-left: 4px solid var(--gc-green);
+    height: 100%;
+  }
+  .pillar i{ font-size: 1.9rem; color: var(--gc-brown); }
+  .pillar h4{ font-size: 1.15rem; margin-top: .9rem; color: var(--gc-green); }
+
+  /* ---------- Tour category tiles ---------- */
+  .tile{
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--gc-radius);
+    height: 340px;
+    display:flex;
+    align-items:flex-end;
+    color:#fff;
+    text-decoration:none;
+  }
+  .tile img{
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+    transition: transform .6s ease;
+  }
+  .tile::before{
+    content:"";
+    position:absolute; inset:0;
+    background: linear-gradient(180deg, rgba(11,20,2,0) 35%, rgba(11,20,2,.85) 100%);
+    z-index:1;
+  }
+  .tile:hover img{ transform: scale(1.08); }
+  .tile-body{ position:relative; z-index:2; padding: 1.4rem; }
+  .tile-tag{
+    display:inline-block;
+    background: var(--gc-brown);
+    color:#fff;
+    font-size:.68rem;
+    font-weight:700;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    padding:.2rem .6rem;
+    margin-bottom:.5rem;
+  }
+  .tile h5{ font-family:'Anton',sans-serif; text-transform:uppercase; margin:0; }
+
+  /* ---------- Tour cards ---------- */
+  .tour-card{
+    border: none;
+    border-radius: var(--gc-radius);
+    overflow: hidden;
+    box-shadow: 0 6px 24px rgba(20,30,5,.08);
+    height: 100%;
+    transition: transform .3s ease, box-shadow .3s ease;
+  }
+  .tour-card:hover{ transform: translateY(-6px); box-shadow: 0 14px 34px rgba(20,30,5,.16); }
+  .tour-card img{ height: 220px; object-fit: cover; width:100%; }
+  .tour-meta{ font-size:.8rem; color: var(--gc-blue); font-weight:600; }
+  .tour-meta i{ margin-right:.3rem; }
+  .price-tag{
+    font-family:'Anton', sans-serif;
+    color: var(--gc-green);
+    font-size: 1.35rem;
+  }
+
+  /* ---------- Guide / About ---------- */
+  .guide-photo{
+    border-radius: var(--gc-radius);
+    width: 100%;
+    box-shadow: 0 20px 40px rgba(20,30,5,.18);
+  }
+  .guide-frame{ position:relative; }
+  .guide-frame::before{
+    content:"";
+    position:absolute;
+    top: -18px; left: -18px;
+    width: 100%; height: 100%;
+    border: 4px solid var(--gc-brown);
+    z-index:-1;
+  }
+
+  /* ---------- Gallery ---------- */
+  .gal-item{ overflow:hidden; border-radius: var(--gc-radius); }
+  .gal-item img{
+    width:100%; height:100%; object-fit:cover;
+    aspect-ratio: 1/1;
+    transition: transform .5s ease;
+  }
+  .gal-item:hover img{ transform: scale(1.1); }
+
+  /* ---------- Testimonials ---------- */
+  .testimonial-card{
+    background: var(--gc-white);
+    padding: 2.5rem;
+    border-radius: var(--gc-radius);
+    box-shadow: 0 6px 30px rgba(20,30,5,.08);
+  }
+  .testimonial-card i.bi-quote{ font-size:2rem; color: var(--gc-brown); }
+  .carousel-indicators [data-bs-target]{ background-color: var(--gc-green); }
+
+  /* ---------- CTA band ---------- */
+  .cta-band{
+    position: relative;
+    color:#fff;
+    padding: 6rem 0 7rem;
+    background: linear-gradient(160deg, var(--gc-blue) 0%, var(--gc-green-dark) 100%);
+  }
+  .cta-ridge-divider{
+    width: 100%;
+    line-height: 0;
+    margin-bottom: -1px; /* fuse seam with the section below */
+  }
+  .cta-ridge-divider svg{ width:100%; height:56px; display:block; }
+  .cta-band .eyebrow{ color:#A8C24A; }
+  .cta-band h2{ color:#fff; font-size: clamp(2rem, 4vw, 3rem); }
+
+  /* WhatsApp chat card */
+  .chat-card{
+    background: var(--gc-white);
+    color: var(--gc-ink);
+    border-radius: 14px;
+    padding: 1.75rem;
+    max-width: 400px;
+    margin-inline: auto;
+    box-shadow: 0 24px 60px rgba(0,0,0,.35);
+    text-align: left;
+  }
+  .chat-card .chat-header{
+    display:flex; align-items:center; gap:.75rem;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(0,0,0,.08);
+  }
+  .chat-card .chat-avatar{
+    width: 46px; height:46px; border-radius:50%;
+    object-fit: cover; flex-shrink:0;
+    border: 2px solid var(--gc-green);
+  }
+  .chat-card .chat-name{ font-weight:700; font-size:.95rem; line-height:1.2; }
+  .chat-card .chat-status{
+    font-size:.75rem; color:#25D366; font-weight:600;
+    display:flex; align-items:center; gap:.3rem;
+  }
+  .chat-card .chat-status .dot{
+    width:7px; height:7px; border-radius:50%; background:#25D366; display:inline-block;
+  }
+  .chat-bubble{
+    background: var(--gc-cream);
+    border-radius: 12px 12px 12px 2px;
+    padding: .85rem 1rem;
+    font-size: .88rem;
+    line-height: 1.45;
+    margin-bottom: 1.4rem;
+    position: relative;
+  }
+  .chat-bubble .wave{ display:inline-block; }
+  .btn-whatsapp-cta{
+    display:flex; align-items:center; justify-content:center; gap:.6rem;
+    background: #25D366;
+    color:#fff;
+    font-weight: 700;
+    letter-spacing:.3px;
+    padding: .85rem 1rem;
+    border-radius: 10px;
+    text-decoration:none;
+    font-size: .95rem;
+    transition: all .25s ease;
+  }
+  .btn-whatsapp-cta:hover{ background:#1fb857; color:#fff; }
+  .btn-whatsapp-cta i{ font-size:1.25rem; }
+  .chat-card .response-note{
+    text-align:center;
+    font-size:.72rem;
+    color: #7c8570;
+    margin-top: .7rem;
+  }
+
+  /* ---------- Footer ---------- */
+  footer{
+    background: var(--gc-green-dark);
+    color: rgba(255,255,255,.85);
+  }
+  footer .brand-word{ color:#fff; }
+  footer .brand-word small{ color: #C9D9A3; }
+  footer a.footer-link{
+    color: rgba(255,255,255,.75);
+    text-decoration: none;
+    font-size: .92rem;
+  }
+  footer a.footer-link:hover{ color: #fff; }
+  .social-icon{
+    width: 38px; height:38px;
+    display:inline-flex; align-items:center; justify-content:center;
+    border: 1px solid rgba(255,255,255,.3);
+    border-radius: 50%;
+    color:#fff;
+    transition: all .25s ease;
+  }
+  .social-icon:hover{ background: var(--gc-brown); border-color: var(--gc-brown); }
+
+  .whatsapp-fab{
+    position: fixed;
+    bottom: 24px; right: 24px;
+    width: 58px; height: 58px;
+    background: #25D366;
+    border-radius: 50%;
+    display:flex; align-items:center; justify-content:center;
+    color:#fff; font-size:1.6rem;
+    box-shadow: 0 10px 24px rgba(0,0,0,.25);
+    z-index: 1050;
+    animation: fab-pulse 2.6s ease-in-out infinite;
+  }
+  @keyframes fab-pulse{
+    0%, 100% { box-shadow: 0 10px 24px rgba(0,0,0,.25), 0 0 0 0 rgba(37,211,102,.55); }
+    50% { box-shadow: 0 10px 24px rgba(0,0,0,.25), 0 0 0 12px rgba(37,211,102,0); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .whatsapp-fab{ animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== Navbar ===== -->
+<nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
+  <div class="container">
+    <a class="brand-mark" href="#top">
+      <img src="assets/gianca-logo-white.png" alt="GIANCA — Your Travel Partner" class="logo-white">
+      <img src="assets/gianca-logo-green.png" alt="GIANCA — Your Travel Partner" class="logo-green">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navContent">
+      <ul class="navbar-nav align-items-lg-center">
+        <li class="nav-item"><a class="nav-link" href="#tours">Tours</a></li>
+        <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
+        <li class="nav-item"><a class="nav-link" href="#testimonials">Reviews</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+          <a href="#contact" class="btn btn-gc-primary">Plan My Trip</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== Hero ===== -->
+<header class="hero" id="top">
+  <div class="container hero-content">
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="eyebrow mb-3">Cali · Valle del Cauca · Colombia</div>
+        <h1 class="mb-4">Explore Colombia's<br><span>Wild Heart</span> With A Local Guide</h1>
+        <p class="lead mb-4">Waterfalls, cloud forests, Pacific coastlines and Andean summits — personally guided
+          tours built around real trails, real communities, and real adventure.</p>
+        <div class="d-flex flex-wrap gap-3">
+          <a href="#tours" class="btn btn-gc-primary btn-lg">View Tours</a>
+          <a href="#contact" class="btn btn-gc-outline btn-lg text-white">Talk to Gianca</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ===== Stats strip ===== -->
+<div class="hero-stats py-4">
+  <div class="container">
+    <div class="row text-center g-4">
+      <div class="col-6 col-md-3">
+        <div class="stat-num">8+</div>
+        <div class="stat-label">Years Guiding</div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-num">120+</div>
+        <div class="stat-label">Tours Completed</div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-num">1,100+</div>
+        <div class="stat-label">Travelers Hosted</div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-num">5.0</div>
+        <div class="stat-label">Average Rating</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== About / Pillars ===== -->
+<section id="about" class="bg-cream">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-5">
+        <div class="guide-frame">
+          <img src="https://images.unsplash.com/photo-1522163182402-834f871fd851?auto=format&fit=crop&w=900&q=80" class="guide-photo" alt="Gianca, your local guide, on the trail in Colombia">
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <div class="eyebrow mb-2">Your Travel Partner</div>
+        <h2 class="mb-4" style="color:var(--gc-green);">Not A Tour Company.<br>A Personal Guide.</h2>
+        <p class="mb-4" style="max-width:600px;">I'm Gianca — a Cali-based hiking and nature guide. GIANCA started
+          as a way to share the trails, waterfalls, and coastlines I grew up exploring with travelers who want
+          more than a checklist. Every itinerary is built around three things:</p>
+        <div class="row g-3">
+          <div class="col-md-4">
+            <div class="pillar">
+              <i class="bi bi-tree"></i>
+              <h4>Naturaleza</h4>
+              <p class="mb-0 small">Routes chosen for real wilderness — cloud forest, coastline, and páramo, not tourist traps.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="pillar">
+              <i class="bi bi-geo-alt"></i>
+              <h4>Locación</h4>
+              <p class="mb-0 small">Deep local knowledge of the Valle del Cauca and Colombia's Pacific region.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="pillar">
+              <i class="bi bi-person-check"></i>
+              <h4>Identidad</h4>
+              <p class="mb-0 small">Small groups, honest planning, and a guide who's with you from start to finish.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ridge" aria-hidden="true">
+  <svg viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0,50 L120,20 L220,38 L340,10 L460,34 L560,26 L680,42 L800,15 L920,36 L1040,24 L1160,44 L1280,18 L1440,40 L1440,60 L0,60 Z" fill="var(--gc-green)"></path></svg>
+</div>
+
+<!-- ===== Tour Categories ===== -->
+<section id="tours" style="background:var(--gc-green-dark);" class="text-white">
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-lg-7">
+        <div class="eyebrow mb-2" style="color:#A8C24A;">Where We Go</div>
+        <h2 class="text-white">Pick Your Terrain</h2>
+      </div>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-4">
+        <a class="tile" href="#contact">
+          <img src="https://images.unsplash.com/photo-1533587851505-d119e13fa0d7?auto=format&fit=crop&w=800&q=80" alt="La Reina waterfall hike">
+          <div class="tile-body">
+            <span class="tile-tag">Hiking</span>
+            <h5>La Reina Waterfall</h5>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <a class="tile" href="#contact">
+          <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" alt="Pacific Ocean expedition">
+          <div class="tile-body">
+            <span class="tile-tag">Coastal</span>
+            <h5>Pacific Ocean</h5>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <a class="tile" href="#contact">
+          <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80" alt="Andes summit climb">
+          <div class="tile-body">
+            <span class="tile-tag">High Altitude</span>
+            <h5>Andes Summit Climb</h5>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <a class="tile" href="#contact">
+          <img src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=800&q=80" alt="Cali fruit tour">
+          <div class="tile-body">
+            <span class="tile-tag">Culinary</span>
+            <h5>Fruit Tour, Cali</h5>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <a class="tile" href="#contact">
+          <img src="https://images.unsplash.com/photo-1441716844725-09cedc13a4e7?auto=format&fit=crop&w=800&q=80" alt="Cloud forest trekking">
+          <div class="tile-body">
+            <span class="tile-tag">Trekking</span>
+            <h5>Cloud Forest Trails</h5>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <a class="tile" href="#contact">
+          <img src="https://images.unsplash.com/photo-1502920917128-1aa500764cbd?auto=format&fit=crop&w=800&q=80" alt="Custom adventure planning">
+          <div class="tile-body">
+            <span class="tile-tag">Custom</span>
+            <h5>Build Your Own</h5>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Featured tours ===== -->
+<section id="featured">
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-lg-7">
+        <div class="eyebrow mb-2">Featured Itineraries</div>
+        <h2 style="color:var(--gc-green);">Ready-To-Book Adventures</h2>
+      </div>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-4">
+        <div class="card tour-card">
+          <img src="https://images.unsplash.com/photo-1533587851505-d119e13fa0d7?auto=format&fit=crop&w=700&q=80" alt="La Reina waterfall">
+          <div class="card-body p-4">
+            <div class="tour-meta mb-2"><i class="bi bi-geo-alt-fill"></i>Farallones de Cali</div>
+            <h5 class="mb-2" style="font-family:'Anton',sans-serif; text-transform:uppercase;">La Reina Waterfall Hike</h5>
+            <p class="small text-muted mb-3">A half-day trek through cloud forest to one of the Valle's most
+              striking waterfalls. Includes transport and a local lunch.</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="price-tag">$65 <small class="fs-6 text-muted">/ person</small></span>
+              <a href="#contact" class="btn btn-gc-primary btn-sm">Book Now</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="card tour-card">
+          <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=700&q=80" alt="Pacific coast expedition">
+          <div class="card-body p-4">
+            <div class="tour-meta mb-2"><i class="bi bi-geo-alt-fill"></i>Chocó Biogeográfico</div>
+            <h5 class="mb-2" style="font-family:'Anton',sans-serif; text-transform:uppercase;">Pacific Coast Expedition</h5>
+            <p class="small text-muted mb-3">4 days on Colombia's wild Pacific coast — mangroves, remote beaches,
+              and small fishing villages, guided end to end.</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="price-tag">$480 <small class="fs-6 text-muted">/ person</small></span>
+              <a href="#contact" class="btn btn-gc-primary btn-sm">Book Now</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="card tour-card">
+          <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=700&q=80" alt="Andes summit climb">
+          <div class="card-body p-4">
+            <div class="tour-meta mb-2"><i class="bi bi-geo-alt-fill"></i>Los Nevados</div>
+            <h5 class="mb-2" style="font-family:'Anton',sans-serif; text-transform:uppercase;">High Andes Summit Climb</h5>
+            <p class="small text-muted mb-3">A 3-day push above 4,500m for experienced hikers, with acclimatization
+              stops and full safety gear included.</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="price-tag">$390 <small class="fs-6 text-muted">/ person</small></span>
+              <a href="#contact" class="btn btn-gc-primary btn-sm">Book Now</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Gallery ===== -->
+<section id="gallery" class="bg-cream">
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-lg-7">
+        <div class="eyebrow mb-2">@gianca.travel</div>
+        <h2 style="color:var(--gc-green);">From The Trail</h2>
+      </div>
+    </div>
+    <div class="row g-3">
+      <div class="col-6 col-md-4 col-lg-2 gal-item"><img src="https://images.unsplash.com/photo-1441716844725-09cedc13a4e7?auto=format&fit=crop&w=400&q=80" alt="Mountain trail"></div>
+      <div class="col-6 col-md-4 col-lg-2 gal-item"><img src="https://images.unsplash.com/photo-1533587851505-d119e13fa0d7?auto=format&fit=crop&w=400&q=80" alt="Waterfall"></div>
+      <div class="col-6 col-md-4 col-lg-2 gal-item"><img src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=400&q=80" alt="Tropical fruit market"></div>
+      <div class="col-6 col-md-4 col-lg-2 gal-item"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80" alt="Pacific coastline"></div>
+      <div class="col-6 col-md-4 col-lg-2 gal-item"><img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=400&q=80" alt="Mountain lake"></div>
+      <div class="col-6 col-md-4 col-lg-2 gal-item"><img src="https://images.unsplash.com/photo-1502920917128-1aa500764cbd?auto=format&fit=crop&w=400&q=80" alt="Forest canopy"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Testimonials ===== -->
+<section id="testimonials">
+  <div class="container">
+    <div class="row justify-content-center text-center mb-5">
+      <div class="col-lg-6">
+        <div class="eyebrow mb-2">Traveler Stories</div>
+        <h2 style="color:var(--gc-green);">What Guests Say</h2>
+      </div>
+    </div>
+    <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <div class="row justify-content-center">
+            <div class="col-lg-7">
+              <div class="testimonial-card text-center">
+                <i class="bi bi-quote"></i>
+                <p class="fs-5 my-3">Gianca knew every turn of the trail and every family running a stand along
+                  the way. It felt like traveling with a friend who happens to know all of Colombia.</p>
+                <strong>— Maren S., Germany</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="row justify-content-center">
+            <div class="col-lg-7">
+              <div class="testimonial-card text-center">
+                <i class="bi bi-quote"></i>
+                <p class="fs-5 my-3">The Pacific coast trip was the highlight of our whole South America trip.
+                  Small group, real communities, zero rush.</p>
+                <strong>— Daniel R., Canada</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="row justify-content-center">
+            <div class="col-lg-7">
+              <div class="testimonial-card text-center">
+                <i class="bi bi-quote"></i>
+                <p class="fs-5 my-3">Safety-first but never slow — the Andes climb was tough and exactly what we
+                  asked for. Would book with GIANCA again in a heartbeat.</p>
+                <strong>— Priya K., UK</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-indicators position-static mt-4">
+        <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="0" class="active"></button>
+        <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="1"></button>
+        <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="2"></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA band ===== -->
+<div class="cta-ridge-divider" aria-hidden="true">
+  <svg viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0,50 L120,20 L220,38 L340,10 L460,34 L560,26 L680,42 L800,15 L920,36 L1040,24 L1160,44 L1280,18 L1440,40 L1440,60 L0,60 Z" fill="var(--gc-blue)"></path></svg>
+</div>
+<section class="cta-band p-0">
+  <div class="container position-relative">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6 text-center text-lg-start">
+        <div class="eyebrow mb-2">Let's Plan It</div>
+        <h2 class="mb-3">Ready For<br>Your Next Trail?</h2>
+        <p class="mb-0" style="max-width:460px; opacity:.85; margin-inline:auto;">Tell me your dates and what kind
+          of adventure you're after — waterfall, summit, coastline, or all three — and I'll build the itinerary
+          around it.</p>
+      </div>
+      <div class="col-lg-6">
+        <div class="chat-card">
+          <div class="chat-header">
+            <img src="https://images.unsplash.com/photo-1522163182402-834f871fd851?auto=format&fit=crop&w=200&q=80" class="chat-avatar" alt="Gianca">
+            <div>
+              <div class="chat-name">Gianca</div>
+              <div class="chat-status"><span class="dot"></span>Usually replies within an hour</div>
+            </div>
+          </div>
+          <div class="chat-bubble">
+            <span class="wave">👋</span> Hey! Tell me your travel dates and what kind of adventure you're after —
+            I'll help you plan it from there.
+          </div>
+          <a href="https://wa.me/573000000000?text=Hi%20Gianca%2C%20I%27d%20love%20to%20plan%20a%20trip%20with%20you!%20Here%20are%20my%20dates%20and%20what%20I%27m%20hoping%20to%20do%3A"
+             class="btn-whatsapp-cta" target="_blank" rel="noopener">
+            <i class="bi bi-whatsapp"></i> Start the Conversation
+          </a>
+          <div class="response-note">No booking fees — just a real chat about your trip.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Contact / Footer ===== -->
+<footer id="contact" class="pt-5">
+  <div class="container pb-4">
+    <div class="row g-5">
+      <div class="col-lg-4">
+        <a class="brand-mark mb-3" href="#top">
+          <img src="assets/gianca-logo-white.png" alt="GIANCA — Your Travel Partner" style="height:140px; width:auto;">
+        </a>
+        <p class="small mt-3" style="max-width:320px;">Personal hiking and nature tours based in Cali, Colombia.
+          Trails, waterfalls, coastlines, and Andean summits — guided with local knowledge.</p>
+        <div class="d-flex gap-2 mt-3">
+          <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
+          <a href="#" class="social-icon"><i class="bi bi-whatsapp"></i></a>
+          <a href="#" class="social-icon"><i class="bi bi-youtube"></i></a>
+        </div>
+      </div>
+      <div class="col-lg-2 col-6">
+        <h6 class="text-uppercase fw-bold mb-3" style="letter-spacing:1px; color:#A8C24A;">Explore</h6>
+        <ul class="list-unstyled d-flex flex-column gap-2">
+          <li><a class="footer-link" href="#tours">Tours</a></li>
+          <li><a class="footer-link" href="#about">About</a></li>
+          <li><a class="footer-link" href="#gallery">Gallery</a></li>
+          <li><a class="footer-link" href="#testimonials">Reviews</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-2 col-6">
+        <h6 class="text-uppercase fw-bold mb-3" style="letter-spacing:1px; color:#A8C24A;">Tours</h6>
+        <ul class="list-unstyled d-flex flex-column gap-2">
+          <li><a class="footer-link" href="#tours">Hiking</a></li>
+          <li><a class="footer-link" href="#tours">Coastal</a></li>
+          <li><a class="footer-link" href="#tours">Culinary</a></li>
+          <li><a class="footer-link" href="#tours">Custom</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-4">
+        <h6 class="text-uppercase fw-bold mb-3" style="letter-spacing:1px; color:#A8C24A;">Get In Touch</h6>
+        <ul class="list-unstyled d-flex flex-column gap-2 small">
+          <li><i class="bi bi-geo-alt me-2"></i>Cali, Valle del Cauca, Colombia</li>
+          <li><i class="bi bi-envelope me-2"></i>hello@giancatravel.com</li>
+          <li><i class="bi bi-telephone me-2"></i>+57 300 000 0000</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="border-top py-3" style="border-color: rgba(255,255,255,.15) !important;">
+    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center small gap-2">
+      <span>© 2026 GIANCA — Your Travel Partner. All rights reserved.</span>
+      <span>Made for travelers who like to walk further.</span>
+    </div>
+  </div>
+</footer>
+
+<a href="https://wa.me/573000000000?text=Hi%20Gianca%2C%20I%27d%20love%20to%20plan%20a%20trip%20with%20you!"
+   class="whatsapp-fab" aria-label="Message on WhatsApp" target="_blank" rel="noopener">
+  <i class="bi bi-whatsapp"></i>
+</a>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  const nav = document.getElementById('mainNav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 60) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+  });
+</script>
+</body>
+</html>
