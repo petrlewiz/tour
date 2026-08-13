@@ -97,6 +97,31 @@
   }
   .navbar .nav-link:hover::after{ width:100%; }
 
+  /* Language switch (visual only) */
+  .lang-switch{
+    display:flex;
+    align-items:center;
+    gap:.5rem;
+    font-size:.8rem;
+    font-weight:700;
+    letter-spacing:.5px;
+  }
+  .lang-switch a{
+    text-decoration:none;
+    color: rgba(255,255,255,.6);
+    padding-bottom:2px;
+    border-bottom: 2px solid transparent;
+    transition: color .2s ease, border-color .2s ease;
+  }
+  .lang-switch a.active{
+    color:#fff;
+    border-bottom-color: var(--gc-brown);
+  }
+  .lang-switch .divider{ color: rgba(255,255,255,.35); font-weight:400; }
+  .navbar.scrolled .lang-switch a{ color: rgba(32,36,23,.5); }
+  .navbar.scrolled .lang-switch a.active{ color: var(--gc-green); }
+  .navbar.scrolled .lang-switch .divider{ color: rgba(32,36,23,.3); }
+
   /* Mobile dropdown menu: while the navbar is still transparent (top of page, over
      the hero photo), give the opened menu a solid backing so links stay readable.
      Once scrolled, the navbar itself already has a solid white background, so no
@@ -444,6 +469,13 @@
         <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
         <li class="nav-item"><a class="nav-link" href="#testimonials">Reviews</a></li>
         <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        <li class="nav-item ms-lg-2">
+          <div class="lang-switch">
+            <a href="#" class="active">EN</a>
+            <span class="divider">/</span>
+            <a href="#">ES</a>
+          </div>
+        </li>
         <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
           <a href="#contact" class="btn btn-gc-primary">Plan My Trip</a>
         </li>
